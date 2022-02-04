@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load bootstrap4 %}
+
+<title>{% block head_title %}Refund{% endblock head_title %}</title>
+
+
+<div class="container mt-3 col-lg-6">
+    <div class="card-header">
+        <p class="">Username: {{user}}</p>
+        <p class="">Email: {{email}}</p>
+    </div>
+    {% for refund in object %}
+    <div class="mb-2 mt-2">
+
+        <div class="card-footer mb-2">
+            <p class="card-text">Date: {{refund.date_req}}</p>
+            <p class="card-text">Refund reference code: {{refund.ref_code}}</p>
+            <p class="card-text">Reason: {{refund.reason}}.</p>
+        </div>
+    </div>
+    {% endfor %}
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button class="btn btn-primary col mb-2" type="submit">Send message</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,25 @@
+
+<nav class="d-flex justify-content-center mt-2">
+    <ul class="pagination pagination-sm">
+
+        {% if articles.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{products.previous_page_number}}">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <a class="page-link" href="?page={{articles.number}}">{{articles.number}}
+            </a>
+        </li>
+        {% if articles.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{articles.next_page_number}}">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>

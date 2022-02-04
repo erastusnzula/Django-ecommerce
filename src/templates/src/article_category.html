@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+{% load humanize %}
+
+<title>{% block head_title %}{{ category | title }}{% endblock head_title %}</title>
+<div class="container-fluid col-lg-7 mt-2">
+    {% for article in articles %}
+
+    <div class="card">
+        <h3 class="card-header">
+            <a href={{article.get_all_articles_url}}>{{article.title}}</a>
+            <small>
+                - Published: {{ article.date_added|naturaltime }}&nbsp;
+                by {{article.author|title}},&nbsp;
+                Category:&nbsp;
+                {% for category in article.category.all %}
+                <a href="{% url 'src:article-category' category.name %}">
+                    {{ category.name }}</a>&nbsp;
+                {% endfor %}
+            </small>
+        </h3>
+        <div class="card-body">
+            <p>{{ article.description |safe | slice:":200" }} <a href={{article.get_all_articles_url}}>Read more</a></p>
+        </div>
+    </div>
+    {% endfor %}
+{% include 'src/snippets/article_pagination.html' %}
+</div>
+{% endblock %}

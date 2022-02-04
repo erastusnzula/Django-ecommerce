@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load bootstrap4 %}
+{% load humanize %}
+{% load static %}
+
+<title>{% block head_title %}Orders{% endblock head_title %}</title>
+
+<div class="container-fluid mt-2 col-lg-12">
+    <div class="table-responsive text-nowrap ">
+        <h2 class="pb-2 mb-2 border-bottom col text-center"> Paid Orders</h2>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr class="text-center table-primary">
+                <th scope="col">S/N</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Ref code</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Refund</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Price</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for order_product in object %}
+            <tr>
+                <td class="text-info" colspan="9"><b>Order: {{forloop.counter}}</b></td>
+                <td colspan="9"></td>
+            </tr>
+            <tr class="text-center">
+
+                {% for orr in order_product.products.all %}
+                <td class="text-center" scope="row">{{forloop.counter}}</td>
+                <td><img style="height: 30px;" src="{{orr.product.image.url}}" alt=""></td>
+                <td class="text-center">{{orr.product.name}}</td>
+                <td class="text-center">{{order_product.ref_code}}</td>
+                <td class="text-center">{{order_product.ordered_date|date:'M d, Y H:i'}}</td>
+                {% if order_product.received %}
+                <td class="text-center text-success">Completed</td>
+                {% elif order_product.being_delivered %}
+                <td class="text-center text-warning">On transit</td>
+                {% elif order_product.cancelled %}
+                <td class="text-center text-warning">Cancelled</td>
+                {% else %}
+                <td class="text-center text-secondary">Pending</td>
+                {% endif %}
+                {% if order_product.refund_requested %}
+                <td class="text-center text-info">Requested</td>
+                {% elif order_product.refund_granted %}
+
+                <td class="text-center text-info">Granted</td>
+                {% else %}
+                <td class="text-center">None</td>
+                {% endif %}
+                <td class="text-center">
+                    {% if orr.product.discount_price %}
+                    ksh. {{orr.product.discount_price|intcomma}}
+                    {% else %}
+                    Ksh. {{orr.product.price|intcomma}}
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {{orr.quantity}}
+
+                </td>
+                <td class="text-center">
+                    {% if orr.product.discount_price %}
+                    Ksh.{{orr.get_total_product_discount_price|intcomma}}
+                    {% else %}
+                    Ksh.{{orr.get_total_product_price|intcomma}}
+                    {% endif %}
+
+                </td>
+
+            </tr>
+            {% endfor %}
+
+
+            {% if order_product.coupon %}
+            <tr class="">
+                <td class="" colspan="9"><b>Coupon</b></td>
+                <td class="text-center" colspan="9"><b>(Ksh. {{order_product.coupon.amount|intcomma}})</b></td>
+            </tr>
+            {% endif %}
+            {% if order_product.get_total %}
+            <tr class="">
+                <td class="" colspan="9"><b>Order Total</b></td>
+                <td class="text-center" colspan="9"><b>Ksh. {{order_product.get_total|intcomma}}</b></td>
+            </tr>
+            {% endif %}
+            {% empty %}
+            <tr>
+                <td class="" colspan="10">No order placed.</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td class="" colspan="10">
+                    <div class="btm pb-4">
+                        <a class="btn btn-primary" href="/">
+                            <img class="" src="{% static 'images/back.png' %}" alt="..."
+                             style="height:20px;">
+                        </a>
+                        <a class="btn btn-primary" href="/request-refund/">Request
+                            Refund</a>
+                        <br/>
+                    </div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load humanize %}
+{% load cart %}
+
+
+<title>{% block head_title %}Home{% endblock head_title %}</title>
+
+
+<div class="container-fluid mt-2 col-lg-12">
+
+    <div class="row mx-auto ">
+        {% for product in object_list %}
+        {% if product.in_stock %}
+        {% include 'src/snippets/list_products.html' %}
+        {% endif %}
+        {% empty %}
+        <div class="container mt-3 col-lg-9">
+          <div class="card mb-2">
+        <div class="card-header">
+            <p class="order text-info">No product added yet.</p>
+        </div>
+          </div>
+      </div>
+
+        {% endfor %}
+    </div>
+    <hr/>
+    {% include 'src/snippets/pagination.html' %}
+</div>
+</div>
+{% endblock content %}

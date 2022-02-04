@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load bootstrap4 %}
+{% load humanize %}
+{% load static %}
+
+<title>{% block head_title %}Cart summary{% endblock head_title %}</title>
+
+<div class="container-fluid mt-2 col-lg-9">
+<div class="table-responsive text-nowrap">
+    <h2 class="pb-2 mb-2 border-bottom col text-center">Cart Summary</h2>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr class="text-center table-primary">
+        <th scope="col">S/N</th>
+        <th scope="col">Image</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Total</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for order_product in object.products.all %}
+      <tr class="text-center">
+        <td scope="row">{{forloop.counter}}</td>
+        <td><img style="height: 30px;" src="{{order_product.product.image.url}}" alt=""></td>
+        <td>{{order_product.product.name}}</td>
+        <td>
+            {% if order_product.product.discount_price %}
+            ksh. {{order_product.product.discount_price|intcomma}}
+            {% else %}
+            Ksh. {{order_product.product.price|intcomma}}
+            {% endif %}
+        </td>
+        <td>
+            <a class="btn btn-sm btn-secondary mr-2" hx-get="{% url 'src:remove-single-product-from-cart' order_product.product.slug %}" hx-target="body">
+               -
+            </a>
+            {{order_product.quantity}}
+            <a class="btn btn-sm btn-secondary ml-2" hx-get="{% url 'src:add-to-cart' order_product.product.slug %}" hx-target="body">
+                +
+            </a>
+        </td>
+        <td>
+            {% if order_product.product.discount_price %}
+            Ksh.{{order_product.get_total_product_discount_price|intcomma}}
+            {% else %}
+            Ksh.{{order_product.get_total_product_price|intcomma}}
+            {% endif %}
+            <td>
+            <a style="color: red;" hx-get="{% url 'src:remove-from-cart' order_product.product.slug %}" hx-target="body">
+                <i class="far fa-trash-alt float-right"></i>
+            </a>
+      </td>
+        </td>
+      </tr>
+
+    {% empty %}
+    <tr>
+        <td colspan="7">Your cart is empty</td>
+    </tr>
+     <td colspan="7">
+        <a class="btn btn-outline-info border rounded  col-lg-3 float-right ml-2" href="/">Shop now</a>
+    </td>
+    {% endfor %}
+
+    {% if object.coupon %}
+    <tr class="">
+    <td colspan="5"><b>Coupon</b></td>
+    <td class="text-center"><b>(Ksh. {{object.coupon.amount|intcomma}})</b></td>
+    </tr>
+    {% endif %}
+    {% if object.get_total %}
+<tr class="">
+    <td colspan="5"><b>Order Total</b></td>
+
+    <td class="text-center"><b>Ksh. {{object.get_total|intcomma}}</b></td>
+    <td colspan="6"><b></b></td>
+</tr>
+    <tr>
+        <td colspan="7">
+            <a class="btn btn-primary" href="/">
+                <img class="" src="{% static 'images/back.png' %}" alt="..."
+                             style="height:20px;">
+            </a>
+            <a class="btn btn-primary" href="/checkout/">Proceed to Checkout</a>
+
+
+        <br/>
+    </td>
+    </tr>
+
+    {% endif %}
+
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load bootstrap4 %}
+{% block content %}
+
+<title>{% block head_title %}Contact us{% endblock head_title %}</title>
+
+
+<div class="container mt-2 col-lg-6 border">
+    <div class="card-header mt-2">
+       <!-- <p class="mr-2">Username: {{user}}</p>-->
+        <p class="">Username: {{user}}</p>
+        <p class="">Email: {{email}}</p>
+
+        <!--<a class="float-right" href="{% url 'src:delete-account' %}">Delete Account</a>-->
+    </div>
+    <div class="text-danger">
+        {% if error %}
+        <p>Please don't use the word {{error}} in your message.</p>
+        {% endif %}
+    </div>
+    <div>
+        <form hx-post="." hx-target="body">
+            {% csrf_token %}
+           {% bootstrap_form form %}
+            <button class="btn btn-primary col mb-2" type="submit">Send message</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

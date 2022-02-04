@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+<title>{% block head_title %}Paypal{% endblock head_title %}</title>
+
+
+{% block content %}
+
+<div class="container col-lg-8">
+    <div class="card col-md-12">
+        <h5 class="order text-info text-center display-4">Pay with Paypal</h5>
+
+        <!-- Set up a container element for the button -->
+        <div id="paypal-button-container"></div>
+
+        <!-- Include the PayPal JavaScript SDK -->
+        <script src="https://www.paypal.com/sdk/js?client-id=AUP0crtx1YS2Ku5ybOZMvJ0uuZfoOtNj1mXVrPUzJtYyCxc9QXl65mABXmvvMFMgMEHS_TyFFRDSwLZm&currency=USD"></script>
+
+        <script>
+        function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+
+
+
+  function initPayPalButton() {
+    paypal.Buttons({
+      style: {
+        shape: 'pill',
+        color: 'blue',
+        layout: 'vertical',
+        label: 'pay',
+        height:50,
+
+      },
+    createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            "amount": {
+              "currency_code": "USD",
+              "value": '{{amount}}'
+            }
+          }]
+        });
+      },
+    onApprove: function (data) {
+        var url = "{% url 'src:paypal-payment-complete' %}"
+        return fetch(url, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'X-CSRFToken': csrftoken,
+          },
+          body: JSON.stringify({
+            orderID: data.orderID
+          })
+        }).then(function () {
+          location.href = '{% url 'src:track-order' %}';
+        })
+      },
+    }).render('#paypal-button-container');
+  }
+  initPayPalButton();
+
+
+
+        </script>
+
+        {% include 'src/snippets/cart_snippet.html' %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+<title>{% block head_title %}About{% endblock head_title %}</title>
+
+{% block content %}
+
+<div class="container mt-2 col-9">
+    {% for object in object_list %}
+    <div class="card mb-2">
+        <div class="card-header text-primary text-center display-4">
+            <h2>{{object.company_name}}</h2>
+        </div>
+        <div class="card-body">
+            <h3 class="text-primary border-bottom">About</h3>
+            <p class="card-text">{{object.company_about|safe}}</p>
+        </div>
+        <div class="card-body">
+            <h3 class="text-primary border-bottom">Contacts</h3>
+            <p class="card-text">{{object.company_contact}}</p>
+            <p class="card-text">{{object.company_location}}</p>
+        </div>
+        <div class="card-footer text-primary">
+            <p class="card-text">Motto : {{object.company_motto}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

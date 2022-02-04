@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+
+<title>{% block head_title %}Profile{% endblock head_title %}</title>
+
+
+<div class="container mt-3 col-lg-5 border">
+
+    <div class="card-header mb-2 mt-2">
+        <p class="order text-info display-4 col text-center">Profile</p>
+    </div>
+    {% if user.profile %}
+
+    <img class="rounded-circle mb-2" src="{{user.profile.image.url}}" alt="..." style="height:200px;">
+    {% endif %}
+    <div>
+
+        <form hx-encoding='multipart/form-data' hx-post="." hx-target="body">
+            {% csrf_token %}
+            {% bootstrap_form u_form %}
+            {% bootstrap_form p_form %}
+            <button class="btn btn-primary col" type="submit">Update profile</button>
+        </form>
+    </div>
+    <div class="card-footer mb-2 mt-2">
+        <a class="mr-2" hx-get="{% url 'src:delete-profile' %}" hx-target="body">Delete Profile</a>
+        <a class="float-right" hx-get="{% url 'src:delete-account' %}" hx-target="body">Delete Account</a>
+    </div>
+
+</div>
+{% endblock content %}

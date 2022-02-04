@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load humanize %}
+
+<title>{% block head_title %}{{object.name}}{% endblock head_title %}</title>
+
+
+<div class="container-fluid mt-2 col-lg-8">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" style="">
+                <img id="mainImage" loading="lazy" src="{{object.image.url}}" class="card-img-top" style="">
+            </div>
+            <hr/>
+            <div class="row mx-auto">
+                {% for image in object.get_product_images_url %}
+                <div class="card mx-auto" style="widthx">
+                    <img onclick="changeImage(event)" loading="lazy" class="card-img-top" src="{{image.image.url}}"
+                         style="height: 100px">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p><b>Name :</b> {{object.name}}</p>
+            <hr/>
+            <p>Category: &nbsp;
+                {% for category in product.category.all %}
+                <a href="{% url 'src:category' category.name %}">{{category.name}}</a>&nbsp;
+                {%endfor %}
+            </p>
+            <hr>
+            {% if product.size.all %}
+            <p class="text-center">
+           {{product.name}} is available in the listed sizes below (Please select and save a size (s) as per
+                your interest)</p>
+            <form action="{% url 'src:size-select' product.slug %}" method="post">
+                {% csrf_token %}
+                <div class="row ml-3">
+                    {% for size in product.size.all %}
+                    &nbsp;
+                    <div class="custom-control custom-checkbox">
+                        <input id="{{size}}" name="size" value="{{size}}" type="checkbox" class="custom-control-input" checked>
+                        <label class="custom-control-label ml-2" for="{{size}}"><a href="{% url 'src:size' size.name %}">{{size.name}}</a></label>
+                    </div>
+
+
+                    {% endfor %}
+                </div>
+                <button class="btn btn btn-primary btn col text-center" type="submit">Save size</button>
+
+            </form>
+            <hr>
+            {% endif %}
+            <P><b>Seller:</b> {{product.get_seller_display}}</P>
+            <hr/>
+            {% if product.discount_price %}
+            <p class="card-text"><b>Price:</b>
+                <del>Ksh. {{product.price|intcomma}}</del>
+                Ksh. {{product.discount_price|intcomma}}
+            </p>
+            {% else %}
+            <p class="card-text"><b>Price:</b> {{product.price|intcomma}}</p>
+            {% endif %}
+            <hr/>
+            <p>
+                {% if object.description %}
+                <b>Description : </b>{{ object.description|safe}}
+                {% endif %}
+            </p>
+            <hr/>
+            <a class="btn btn btn-primary col text-center" hx-get="{{product.add_to_cart_product_url}}" hx-target="body">Add to Cart</a>
+            <hr>
+            <a class="btn btn btn-primary col text-center" hx-get="{% url 'src:cart-summary' %}" hx-target="body">Go to Cart</a>
+            <hr>
+            <a class="btn btn btn-danger col text-center" hx-get="{{object.remove_from_cart_product_url}}" hx-target="body">Remove from Cart</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

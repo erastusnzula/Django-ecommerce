@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block head_title %}{% trans "Log In" %}{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container col-lg-5 border mt-2">
+  <h2 class="pb-2 mb-2 border-bottom col text-center">{% trans "Login" %}</h2>
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<p>{% blocktrans with site.name as site_name %}Please sign in with one
+of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
+for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+
+<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+
+  <div class="login-or">{% trans 'or' %}</div>
+
+</div>
+
+{% include "socialaccount/snippets/login_extra.html" %}
+
+{% else %}
+<p class="col text-center">{% blocktrans %}If you have not created an account,
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+{% endif %}
+  <img class="rounded-circle mb-2 col" src="{% static 'images/logo.png' %}" alt="..."
+                             style="height:250px;">
+
+<form class="login" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {% include 'account/snippets/form_snippet.html' %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button class="btn btn btn-primary col text-center" type="submit">{% trans "Login" %}</button>
+  <hr>
+  <a class="btn btn btn-primary col text-center" href="{% url 'account_reset_password' %}">{% trans "Reset Password" %}</a>
+</form>
+  <br>
+</div>
+{% endblock %}

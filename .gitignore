@@ -1,0 +1,7 @@
+
+__pycache__
+.idea
+emu_env
+db.sqlite3
+media
+venv

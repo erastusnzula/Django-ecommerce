@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+{% load bootstrap4 %}
+{% load cart %}
+<head>
+    <!--Favicon -->
+
+    <link rel="shortcut icon" href="{% static 'images/logo.png' %}"/>
+    <!--Favicon end -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}" type="text/css">
+     <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+
+    <!--site title -->
+    <title>{% block head_title %}E-commerce{% endblock head_title%}</title>
+    <!--end of title -->
+    {% block extra_head %}
+    {% endblock %}
+
+    <!--bootstrap css -->
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    <!-- end of bootstrap css -->
+
+    <!--stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--end of stylesheet -->
+
+
+</head>
+<!--End of head-->
+
+<!--body-->
+<body>
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'src:home' %}">
+            <img class="" src="{% static 'images/logo.png' %}" alt="..."
+                 style="height:30px;">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'src:articles' %}">Articles</a>
+                </li>
+
+                <!--About-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'src:setting' %}">About</a>
+                </li>
+
+                <!--contact-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'src:contact' %}">Contact us</a>
+                </li>
+                <!-- Categories -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="category" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false">
+                        Categories
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                        <a href="{% url 'src:home' %}" class="dropdown-item">All</a>
+                        <div class="dropdown-divider"></div>
+                        {% for category in categories%}
+                        <a class="dropdown-item" href="{% url 'src:category' category.name %}">{{category.name}}</a>
+                        <div class="dropdown-divider"></div>
+                        {% endfor %}
+
+                    </div>
+                </li>
+
+
+                <!--search products-->
+                <li>
+                    <form class="form-inline my-2 my-lg-0" action="{% url 'src:search' %}" method="POST">
+                        {% csrf_token %}
+                        <input class="form-control mr-sm-2" name="name" type="text" placeholder="Search"
+                               aria-label="Search">
+                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </li>
+
+                <!--authenticated user-->
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                <!--cart-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'src:cart-summary' %}">Cart <span class="badge badge-primary">{{request.user|cart_product_count}}</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'src:track-order' %}">Orders</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userMenu" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false">
+                        {% if user.profile.image %}
+                        <img class="rounded-circle" src="{{user.profile.image.url}}" alt="..."
+                             style="height: 20px">
+                        {% else %}
+                        <img class="rounded-circle" src="{% static 'images/profile.jpeg' %}" alt="..."
+                             style="height: 20px">
+                        {% endif %}
+                        <!--<span class="far fa-user-circle"></span>-->
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                        <a class="dropdown-item" href="{% url 'src:profile' %}">Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'account_change_password' %}">Change Password</a>
+                        {% comment %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'account_email' %}">Change E-mail</a>
+                        {% endcomment %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+
+
+                    </div>
+                </li>
+
+                <!--Unauthenticated user-->
+                {% else %}
+
+                <!--cart-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'src:cart-summary' %}">Cart <span class="badge badge-primary">{{request.user|cart_product_count}}</span></a>
+                </li>
+
+                <!--signup-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_signup' %}">Signup</a>
+                </li>
+
+                <!--login-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--end of navbar-->
+<div class="messages">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="text-center alert alert-{{message.tags}} " role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<!--pages body-->
+<main role="main">
+
+    <div>
+        {% block content %}{% endblock content %}
+    </div>
+
+</main>
+<script>
+      document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+      })
+</script>
+<script src="{% static 'scripts/main.js' %}"></script>
+{% block extra_scripts %} {% endblock extra_scripts %}
+</body>
+<!--end of body-->
+
+<!--footer-->
+
+<!--end of footer-->
+
+</html>
+<!--END-->

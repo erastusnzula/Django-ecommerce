@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+
+<div class="container col-lg-5 mt-2 border">
+  <h2 class="pb-2 mb-2 border-bottom col text-center">{% trans "Sign Up" %}</h2>
+
+<p class="col text-center">{% blocktrans %}Already have an account? Then <a href="{{ login_url }}">Login</a>.{% endblocktrans %}</p>
+
+  <img class="rounded-circle mb-2 col" src="{% static 'images/logo.png' %}" alt="..."
+                             style="height:250px;">
+<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {% include 'account/snippets/form_snippet.html' %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button class="btn btn btn-primary col text-center" type="submit">{% trans "Sign up" %}</button>
+</form>
+  <br>
+</div>
+{% endblock %}

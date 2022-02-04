@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load cart %}
+{% load humanize %}
+
+
+<title>{% block head_title %}{{query_name}}{% endblock head_title %}</title>
+
+
+<div class="container-fluid mt-2">
+    <small>
+        <center><h5>Search Term: {{query_name}}</h5></center>
+    </small>
+    <hr>
+    <div class="row mx-auto ">
+        {% for product in products %}
+        {% if product.in_stock %}
+        {% include 'src/snippets/list_products.html' %}
+
+        {% endif %}
+        {% empty %}
+        <div class="container mt-3 col-lg-12">
+            <div class="card mb-2">
+                <div class="card-header">
+                    <p class="order text-info">No product matching the query name: {{query_name}}. Try searching using
+                        other keywords.</p>
+                    <a class="float-left btn btn-sm btn-info" href="{% url 'src:home' %}">Go back to Homepage</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <hr/>
+
+    </div>
+</div>
+{% endblock content %}
