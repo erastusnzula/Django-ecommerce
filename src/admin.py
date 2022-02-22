@@ -4,7 +4,6 @@ from django.utils.html import format_html
 
 from .models import Product, CartProduct, Order, Address, Payment, Coupon, Refund, Setting, ProductImages, Profile, \
     Contact, Category, Size
-from src.models.article import ArticleCategory, Article, Comment
 
 
 # admin.site.unregister(Group)
@@ -145,18 +144,7 @@ class SizeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
-    pass
 
-
-@admin.register(ArticleCategory)
-class ArticleCategoryAdmin(admin.ModelAdmin):
-    pass
-
-@admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
-    pass
 admin.site.site_title = "EMU"
 admin.site.site_header = "EMU"
 admin.site.index_title = "Administration"

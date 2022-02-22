@@ -5,8 +5,8 @@
     <img src="{{product.image.url}}" loading="eager" class="card-img-top" alt="..." style="height:300px">
         </a>
     <div class="card-body">
-        <p class="card-title">{{product.name}} <span class="badge badge-{{product.get_label_display}}">{{product.get_seller_display}}</span>
-        </p>
+        <h5 class="card-title">{{product.name}} <span class="badge badge-{{product.get_label_display}}">{{product.get_seller_display}}</span>
+        </h5>
 
 
         {% if product.discount_price %}

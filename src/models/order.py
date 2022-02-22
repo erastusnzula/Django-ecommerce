@@ -24,6 +24,9 @@ class Order(models.Model):
     refund_granted = models.BooleanField(default=False)
     ip = models.CharField(max_length=200, default="")
 
+    class Meta:
+        ordering = ['-ordered_date']
+
     def __str__(self):
         return self.user.username
 

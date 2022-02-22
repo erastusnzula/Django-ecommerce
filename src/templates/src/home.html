@@ -8,7 +8,7 @@
 <title>{% block head_title %}Home{% endblock head_title %}</title>
 
 
-<div class="container-fluid mt-2 col-lg-12">
+<div class="container-fluid mt-2 col-lg-12" id="products">
 
     <div class="row mx-auto ">
         {% for product in object_list %}
@@ -29,5 +29,5 @@
     <hr/>
     {% include 'src/snippets/pagination.html' %}
 </div>
-</div>
+
 {% endblock content %}

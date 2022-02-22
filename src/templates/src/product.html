@@ -16,7 +16,7 @@
             <div class="row mx-auto">
                 {% for image in object.get_product_images_url %}
                 <div class="card mx-auto" style="widthx">
-                    <img onclick="changeImage(event)" loading="lazy" class="card-img-top" src="{{image.image.url}}"
+                    <img onclick="changeImage(event)" id='image-rep' loading="lazy" class="card-img-top" src="{{image.image.url}}"
                          style="height: 100px">
                 </div>
                 {% endfor %}

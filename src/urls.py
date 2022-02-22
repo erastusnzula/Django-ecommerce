@@ -17,7 +17,7 @@ from src.views.contact import ContactAdmin, ContactConfirmation
 from src.views.paypal import PaypalPayment, paypal_payment_complete
 from src.views.category import product_category
 from src.views.size import product_size, SelectSize
-from src.views.article import Articles, ArticleDetails,article_category
+
 
 app_name = 'src'
 urlpatterns = [
@@ -53,8 +53,6 @@ urlpatterns = [
     path('<category>/', product_category, name='category'),
     path('size/<size>/', product_size, name='size'),
     path('size-select/<slug>/', SelectSize.as_view(), name='size-select'),
-    path('emu/articles/', Articles.as_view(), name='articles'),
-    path('article/<slug>/', ArticleDetails.as_view(), name='article-details'),
-    path('emu/article/<category>/', article_category, name='article-category'),
+
 
 ]

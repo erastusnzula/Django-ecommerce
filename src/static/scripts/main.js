@@ -14,3 +14,23 @@ function getFooter(){
     }
 }
 getFooter()
+
+
+function myFunction() {
+  var input, filter, products, div, h5, i, txtValue;
+  input = document.getElementById("search-form");
+  filter = input.value.toUpperCase();
+  products = document.getElementById("products");
+  div = products.getElementsByTagName("div");
+  for (i = 0; i < div.length; i++) {
+    h5 = div[i].getElementsByTagName("h5")[0];
+    if (h5) {
+      txtValue = h5.textContent || h5.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        div[i].style.display = "";
+      } else {
+        div[i].style.display = "none";
+      }
+    }
+  }
+}

@@ -6,7 +6,7 @@ from django_countries.widgets import CountrySelectWidget
 from src.models.refund import Refund
 from src.models.profile import Profile
 from src.models.contact import Contact
-from src.models.article import Comment
+
 
 PAYMENT_OPTION = (
     ('S', 'Stripe'),
@@ -93,14 +93,3 @@ class ContactForm(forms.ModelForm):
         }
 
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['name', 'email', 'body']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'input', 'placeholder': 'Enter your name'}),
-            'email': forms.TextInput(
-                attrs={'class': 'input', 'placeholder': 'Enter your email address (optional)', 'type': 'email'}),
-            'body': forms.Textarea(attrs={'class': 'input', 'placeholder': 'Enter your comment'}),
-
-        }
