@@ -5,3 +5,4 @@ emu_env
 db.sqlite3
 media
 venv
+paypal_keys.py

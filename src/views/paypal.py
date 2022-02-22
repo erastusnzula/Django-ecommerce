@@ -12,6 +12,7 @@ from paypalcheckoutsdk.orders import OrdersGetRequest
 
 from src.models import Payment
 from src.models.order import Order
+from src.paypal_keys import client_id,client_secret
 
 
 def create_ref_code():
@@ -39,8 +40,8 @@ class PayPalClient:
 
     def __init__(self):
         """Initialize the class attributes."""
-        self.client_id = "AaOM6adDF59berGM_rTpmEeo55imiiI2NYJlydVwpyi0ohhPhUxz6c_N0Cq9mKzjhQml5eLpYvn2ZZIv"
-        self.client_secret = "EKXp-l8j0HQtwZArX1j1pxC_zuiUmVKCjQG6kMJmstapHs2JYxA0yIQkrBINr9U_mNh3KRIcT03gT0tF"
+        self.client_id = client_id
+        self.client_secret = client_secret
         # self.environment = SandboxEnvironment(client_id=self.client_id, client_secret=self.client_secret)
         self.environment = LiveEnvironment(client_id=self.client_id, client_secret=self.client_secret)
         self.client = PayPalHttpClient(self.environment)
