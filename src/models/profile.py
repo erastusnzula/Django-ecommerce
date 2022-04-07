@@ -15,7 +15,6 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.country.name}'
 
-
     """
     def resize_image(self):
         img = Image.open(self.image.path)
@@ -27,4 +26,4 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super().save()
         self.resize_image()
-        """
+    """

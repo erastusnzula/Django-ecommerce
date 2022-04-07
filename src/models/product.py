@@ -74,7 +74,6 @@ class Product(models.Model):
             if not Product.objects.filter(slug=slug_candidate).exists():
                 break
             slug_candidate = '{}-{}'.format(slug_original, (i + 1))
-
         self.slug = slug_candidate
 
     """
@@ -84,7 +83,7 @@ class Product(models.Model):
             size = (300, 300)
             img.thumbnail(size)
             img.save(self.thumbnail.path)
-            """
+    """
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -135,4 +134,4 @@ class ProductImages(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.image.path)
-            """
+    """

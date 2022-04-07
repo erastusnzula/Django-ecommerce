@@ -2,13 +2,11 @@
 
 <div class="card mb-2 mx-auto" style="width:300px">
     <a href="{{product.get_absolute_url}}">
-    <img src="{{product.image.url}}" loading="eager" class="card-img-top" alt="..." style="height:300px">
-        </a>
+        <img src="{{product.image.url}}" loading="eager" class="card-img-top" alt="..." style="height:300px">
+    </a>
     <div class="card-body">
         <h5 class="card-title">{{product.name}} <span class="badge badge-{{product.get_label_display}}">{{product.get_seller_display}}</span>
         </h5>
-
-
         {% if product.discount_price %}
         <p class="card-text">Price:
             <del>{{product.price|intcomma}}</del>
@@ -17,17 +15,14 @@
         </p>
         {% else %}
         <p class="card-text">Price: Ksh. {{product.price|intcomma}}
-            <a href="{{product.get_absolute_url}}" class="btn btn btn-secondary col text-center">View product details</a>
+            <a href="{{product.get_absolute_url}}" class="btn btn btn-secondary col text-center">View product
+                details</a>
         </p>
-
         {% endif %}
-
     </div>
-
     <div class="card-footer p-0 no-gutters">
-        <a class="float-right btn btn-primary border form-control" hx-get="{{product.add_to_cart_home_url}}" hx-target="body">Add to
+        <a class="float-right btn btn-primary border form-control" hx-get="{{product.add_to_cart_home_url}}"
+           hx-target="body">Add to
             Cart</a>
     </div>
-
-
 </div>

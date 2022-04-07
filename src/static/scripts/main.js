@@ -1,4 +1,5 @@
 function init(){
+    console.log(0)
 }
 function changeImage(event){
     var mainImage  = document.getElementById('mainImage')
